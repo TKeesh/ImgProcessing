@@ -112,11 +112,11 @@ if __name__ == "__main__":
 	parser.add_argument("-m", action="store_true", help="masked - set irrelevant size to 0 to mask by 1D (image unresized)")
 	parser.add_argument("-s", action="store_true", help="scaled - set irrelevant size to 0 (default: fitted and scaled within w x h)")
 	
-	parser.add_argument("-wh", help="set output size (default: {0}, {1})".format(str(w), str(h)), type=int, nargs=2)
+	parser.add_argument("--wh", help="set output size (default: {0}, {1})".format(str(w), str(h)), type=int, nargs=2)
 	
-	#parser.add_argument("-rr", help="rotate right (default: {0}, {1})".format(str(w), str(h)), type=int, nargs=1)
-	#parser.add_argument("-rl", help="rotate left (default: {0}, {1})".format(str(w), str(h)), type=int, nargs=1) ne treba 
-	#parser.add_argument("-mirror u d", help="rotate right (default: {0}, {1})".format(str(w), str(h)), type=int, nargs=1) 
+	#parser.add_argument("--rr", help="rotate right (default: {0}, {1})".format(str(w), str(h)), type=int, nargs=1)
+	#parser.add_argument("--rl", help="rotate left (default: {0}, {1})".format(str(w), str(h)), type=int, nargs=1) ne treba 
+	#parser.add_argument("--mirror u d", help="rotate right (default: {0}, {1})".format(str(w), str(h)), type=int, nargs=1) 
 	
 	args = parser.parse_args()	
 	if len(args.imagesFolder) == 2: 
