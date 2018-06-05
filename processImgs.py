@@ -17,11 +17,17 @@ def resizeMasked(datasetDir, outputDir):
 
 		if len(s) > 0:
 			if s == 'w':
-				f = float(h) / img.size[1]
-				w = int(round(img.size[0]*f))
+				if h >= img.size[1]:
+					w = img.size[0]
+				else:
+					fac = float(h) / img.size[1]
+					w = int(round(img.size[0]*fac))
 			else:
-				f = float(w) / img.size[0]
-				h = int(round(img.size[1]*f))
+				if w >= img.size[0]:
+					h = img.size[1]
+				else:
+					fac = float(w) / img.size[0]
+					h = int(round(img.size[1]*fac))
 
 		if img.size[0] == w and img.size[1] == h:
 			continue
