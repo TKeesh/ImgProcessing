@@ -11,24 +11,28 @@ def resizeMasked(datasetDir, outputDir):
 	elif h == 0: s = 'h'
 	else: s = ''
 
-	for fn in os.listdir(datasetDir):		
+	for fn in os.listdir(datasetDir):
 		try: img = Image.open(os.path.join(datasetDir, fn))
 		except: continue
 
 		if len(s) > 0:
-			if s == 'w': w = img.size[0]
-			else: h = img.size[1]
+			if s == 'w':
+				f = float(h) / img.size[1]
+				w = int(round(img.size[0]*f))
+			else:
+				f = float(w) / img.size[0]
+				h = int(round(img.size[1]*f))
 
-		if img.size[0] == w and img.size[1] == h: 
+		if img.size[0] == w and img.size[1] == h:
 			continue
-		
+
 		if img.size[0] == w and img.size[1] < h:
 			black = Image.new(img.mode, (w, h), "black")
 			black.paste(img, (0, int(round((h-img.size[1])/2.0))))
 			black.save(os.path.join(outputDir, fn))
 			print(fn + " masked")
 			continue
-		
+
 		if img.size[0] < w and img.size[1] == h:
 			black = Image.new(img.mode, (w, h), "black")
 			black.paste(img, (int(round((w-img.size[0])/2.0)), 0))
@@ -86,9 +90,9 @@ def resizeScaled(datasetDir, outputDir):
 		except: continue
 
 		if w > 0 and h > 0:
-			if img.size[0] == w and img.size[1] <= h: 
+			if img.size[0] == w and img.size[1] <= h:
 				continue
-			if img.size[0] < w and img.size[1] == h: 
+			if img.size[0] < w and img.size[1] == h:
 				continue
 
 			if img.size[0] > img.size[1]:
@@ -130,12 +134,12 @@ if __name__ == "__main__":
 	args = parser.parse_args()
 
 	datasetDir = os.path.abspath(args.imagesDir[0])
-	if not os.path.exists(datasetDir): 
+	if not os.path.exists(datasetDir):
 		raise OSError(2, 'No such file or directory', datasetDir)
 
 	if args.outputDir:
 		outputDir = os.path.abspath(args.outputDir)
-	else: 
+	else:
 		outputDir = datasetDir + '_out'
 	if not os.path.exists(outputDir): os.makedirs(outputDir)
 
