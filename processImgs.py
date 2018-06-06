@@ -21,46 +21,28 @@ def resizeMasked(datasetDir, outputDir):
 					w = img.size[0]
 				else:
 					fac = float(h) / img.size[1]
-					w = int(round(img.size[0]*fac))
+					w = int(img.size[0]*fac)
 			else:
 				if w >= img.size[0]:
 					h = img.size[1]
 				else:
 					fac = float(w) / img.size[0]
-					h = int(round(img.size[1]*fac))
+					h = int(img.size[1]*fac)
 
 		if img.size[0] == w and img.size[1] == h:
 			continue
 
-		if img.size[0] == w and img.size[1] < h:
-			black = Image.new(img.mode, (w, h), "black")
-			black.paste(img, (0, int(round((h-img.size[1])/2.0))))
-			black.save(os.path.join(outputDir, fn))
-			print(fn + " masked")
-			continue
-
-		if img.size[0] < w and img.size[1] == h:
-			black = Image.new(img.mode, (w, h), "black")
-			black.paste(img, (int(round((w-img.size[0])/2.0)), 0))
-			black.save(os.path.join(outputDir, fn))
-			print(fn + " masked")
-			continue
-
-		if img.size[0] > img.size[1]:
+		if not (img.size[0] <= w and img.size[1] <= h):
 			fac = float(w) / img.size[0]
-			if round(img.size[1]*fac) > h: fac2 = float(h) / round(img.size[1]*fac)
+			if int(img.size[1]*fac) > h: fac2 = float(h) / int(img.size[1]*fac)
 			else: fac2 = 1
-		else:
-			fac = float(h) / img.size[1]
-			if round(img.size[0]*fac) > w: fac2 = float(w) / round(img.size[0]*fac)
-			else: fac2 = 1
-		img = img.resize((int(round(img.size[0]*fac*fac2)), int(round(img.size[1]*fac*fac2))), Image.ANTIALIAS)
+			img = img.resize((int(img.size[0]*fac*fac2), int(img.size[1]*fac*fac2)), Image.ANTIALIAS)
 
 		black = Image.new(img.mode, (w, h), "black")
 		if img.size[0] == w:
-			black.paste(img, (0, int(round((h-img.size[1])/2.0))))
+			black.paste(img, (0, int((h-img.size[1])/2.0)))
 		else:
-			black.paste(img, (int(round((w-img.size[0])/2.0)), 0))
+			black.paste(img, (int((w-img.size[0])/2.0), 0))
 		black.save(os.path.join(outputDir, fn))
 		print(fn + " resized scaled and masked")
 
@@ -98,26 +80,21 @@ def resizeScaled(datasetDir, outputDir):
 		if w > 0 and h > 0:
 			if img.size[0] == w and img.size[1] <= h:
 				continue
-			if img.size[0] < w and img.size[1] == h:
+			if img.size[0] <= w and img.size[1] == h:
 				continue
 
-			if img.size[0] > img.size[1]:
-				fac = float(w) / img.size[0]
-				if round(img.size[1]*fac) > h: fac2 = float(h) / round(img.size[1]*fac)
-				else: fac2 = 1
-			else:
-				fac = float(h) / img.size[1]
-				if round(img.size[0]*fac) > w: fac2 = float(w) / round(img.size[0]*fac)
-				else: fac2 = 1
-			img = img.resize((int(round(img.size[0]*fac*fac2)), int(round(img.size[1]*fac*fac2))), Image.ANTIALIAS)
+			fac = float(w) / img.size[0]
+			if int(img.size[1]*fac) > h: fac2 = float(h) / int(img.size[1]*fac)
+			else: fac2 = 1
+			img = img.resize((int(img.size[0]*fac*fac2), int(img.size[1]*fac*fac2)), Image.ANTIALIAS)
 		elif w > 0:
 			if img.size[0] == w: continue
 			fac = float(w) / img.size[0]
-			img = img.resize((w, int(round(img.size[1]*fac))), Image.ANTIALIAS)
+			img = img.resize((w, int(img.size[1]*fac)), Image.ANTIALIAS)
 		else:
 			if img.size[1] == h: continue
 			fac = float(h) / img.size[1]
-			img = img.resize((int(round(img.size[0]*fac)), h), Image.ANTIALIAS)
+			img = img.resize((int(img.size[0]*fac), h), Image.ANTIALIAS)
 
 		img.save(os.path.join(outputDir, fn))
 		print(fn + " resized scaled")
