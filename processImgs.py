@@ -34,9 +34,17 @@ def resizeMasked(datasetDir, outputDir):
 
 		if not (img.size[0] <= w and img.size[1] <= h):
 			fac = float(w) / img.size[0]
-			if int(img.size[1]*fac) > h: fac2 = float(h) / int(img.size[1]*fac)
+			if int(img.size[1]*fac) > h: fac2 = float(h) / (img.size[1]*fac)
 			else: fac2 = 1
-			img = img.resize((int(img.size[0]*fac*fac2), int(img.size[1]*fac*fac2)), Image.ANTIALIAS)
+			if str(img.size[0]*fac*fac2).split('.')[1][0] == '0':
+				w_img = int(round(img.size[0]*fac*fac2))
+			else:
+				w_img = int(img.size[0]*fac*fac2)
+			if str(img.size[1]*fac*fac2).split('.')[1][0] == '0':
+				h_img = int(round(img.size[1]*fac*fac2))
+			else:
+				h_img = int(img.size[1]*fac*fac2)
+			img = img.resize((w_img, h_img), Image.ANTIALIAS)
 
 		black = Image.new(img.mode, (w, h), "black")
 		if img.size[0] == w:
@@ -84,9 +92,17 @@ def resizeScaled(datasetDir, outputDir):
 				continue
 
 			fac = float(w) / img.size[0]
-			if int(img.size[1]*fac) > h: fac2 = float(h) / int(img.size[1]*fac)
+			if int(img.size[1]*fac) > h: fac2 = float(h) / (img.size[1]*fac)
 			else: fac2 = 1
-			img = img.resize((int(img.size[0]*fac*fac2), int(img.size[1]*fac*fac2)), Image.ANTIALIAS)
+			if str(img.size[0]*fac*fac2).split('.')[1][0] == '0':
+				w_img = int(round(img.size[0]*fac*fac2))
+			else:
+				w_img = int(img.size[0]*fac*fac2)
+			if str(img.size[1]*fac*fac2).split('.')[1][0] == '0':
+				h_img = int(round(img.size[1]*fac*fac2))
+			else:
+				h_img = int(img.size[1]*fac*fac2)
+			img = img.resize((w_img, h_img), Image.ANTIALIAS)
 		elif w > 0:
 			if img.size[0] == w: continue
 			fac = float(w) / img.size[0]
